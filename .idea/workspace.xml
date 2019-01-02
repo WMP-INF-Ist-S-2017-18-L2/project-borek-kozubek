@@ -194,7 +194,7 @@
     </option>
   </component>
   <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" />
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds" extendedState="7">
     <option name="y" value="23" />
     <option name="width" value="1147" />
     <option name="height" value="966" />
@@ -248,7 +248,7 @@
     <property name="OverrideImplement.combined" value="false" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1546455760337" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1546455802999" />
     <property name="dynamic.classpath" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Problems" />
@@ -367,7 +367,7 @@
       <workItem from="1546374600980" duration="7685000" />
       <workItem from="1546439045724" duration="7664000" />
       <workItem from="1546450024807" duration="608000" />
-      <workItem from="1546450706095" duration="1095000" />
+      <workItem from="1546450706095" duration="1420000" />
     </task>
     <task id="LOCAL-00001" summary="[GUI] Gotowe UI (zaplanowane lekkie poprawki)">
       <created>1546450726959</created>
@@ -380,10 +380,10 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="18354000" />
+    <option name="totallyTimeSpent" value="18679000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="7" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" sideWeight="0.6703755" visible="true" weight="0.18530351" />
       <window_info id="Structure" order="1" weight="0.25" />
