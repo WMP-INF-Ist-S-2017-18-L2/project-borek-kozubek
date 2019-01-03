@@ -5,7 +5,8 @@ return [
 	'dbname' => 'testowka',
 	'user' => 'postgres',
 	'pass' => '4dministracj!',
-    'table' => 'homesss'
+    'table' => 'homesss',
+    'datatable' => 'lastupdate'
 	];
 /*
 $host="127.0.0.1";

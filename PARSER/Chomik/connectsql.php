@@ -1,6 +1,7 @@
 <?php
 $pgsqldbconfig = require_once 'pgsqldbconfig.php';
 $table=$pgsqldbconfig['table'];
+$datatable=$pgsqldbconfig['datatable'];
 
 $dsn = "pgsql:host={$pgsqldbconfig['host']}; port={$pgsqldbconfig['port']}; dbname={$pgsqldbconfig['dbname']}";
 $attributes = [

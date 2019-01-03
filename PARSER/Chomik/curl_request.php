@@ -1,10 +1,10 @@
 <?php
 set_time_limit(600);
 $connectsql = require_once 'connectsql.php';
-$query="INSERT INTO $table (itemid, datatrackid, city, value, field, rooms, url)VALUES(:itemid,:datatrackid,:city,:cena,:powierzchnia,:rooms,:url)";
-$queryu="UPDATE $table SET city = :city, value = :cena, field = :powierzchnia, rooms = :rooms, url = :url WHERE itemid = :itemid AND datatrackid = :datatrackid";
-$stmt = $pdo->prepare($query);
-$stmtu = $pdo->prepare($queryu);
+$stmt = $pdo->prepare("INSERT INTO $table (itemid, datatrackid, city, value, field, rooms, url)VALUES(:itemid,:datatrackid,:city,:cena,:powierzchnia,:rooms,:url)");
+$stmtu = $pdo->prepare("UPDATE $table SET city = :city, value = :cena, field = :powierzchnia, rooms = :rooms, url = :url WHERE itemid = :itemid AND datatrackid = :datatrackid");
+$data = $pdo->prepare("INSERT INTO $datatable (id, vendor, date)VALUES(:id, :vendor,:date)");
+$datau = $pdo->prepare("UPDATE $datatable SET vendor = :vendor, date = :date WHERE id = :id");
 $fp = fopen("dane.txt","w");
 
 $data_item_id='article class=\"offer-item ad_id(.*?)\s*\"';
@@ -127,14 +127,33 @@ function pars($wynik){
     }
 }
 
-echo 'done';
+$datas = [
+    ':id' => '1',
+    ':vendor' => 'otodom',
+    ':date' => date('d-m-Y H:i:s'),
+];
+
+try{
+    $data->execute($datas);
+}catch (PDOException $e){
+    $datau->execute($datas);
+}catch (Exception $err){
+    echo '<br />Data Insertion PROBLEM: '.$e->getMessage().'or Update PROBLEM: '.$err->getMessage();
+    error_log('<br />Data Insertion PROBLEM: '.$e->getMessage().'or Update PROBLEM: '.$err->getMessage());
+}
+
+echo 'done in '.date('d-m-Y H:i:s');
 
 fclose($fp);
 curl_close($ch);
 $stmt->closeCursor();
 $stmtu->closeCursor();
+$data->closeCursor();
+$datau->closeCursor();
 $stmt = null;
 $stmtu = null;
+$data = null;
+$datau = null;
 $pdo->query('SELECT pg_terminate_backend(pg_backend_pid());');
 $pdo = null;
 ?>
