@@ -45,13 +45,18 @@
             <Menu text="Pomoc">
                <MenuItem fx:id="menuHelpAbout" onAction="#menuHelpAbout_onAction" text="O projekcie..." />
             </Menu>
-        </MenuBar>
-        <HBox HBox.hgrow="ALWAYS" />
-        <Label fx:id="mainDBstatus" prefHeight="30" text="---">
-           <HBox.margin>
-               <Insets right="10"/>
-           </HBox.margin>
-        </Label>
+            </MenuBar>
+            <HBox HBox.hgrow="ALWAYS" />
+            <Label fx:id="mainDBstatus" prefHeight="30" text="---">
+               <HBox.margin>
+                   <Insets right="40"/>
+               </HBox.margin>
+            </Label>
+            <Label fx:id="mainLastUpdate" prefHeight="30">
+               <HBox.margin>
+                   <Insets right="10"/>
+               </HBox.margin>
+            </Label>
        </HBox>
 
       <GridPane GridPane.columnIndex="0" GridPane.rowIndex="1">

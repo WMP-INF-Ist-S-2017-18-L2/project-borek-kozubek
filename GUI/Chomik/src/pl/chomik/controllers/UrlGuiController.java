@@ -12,7 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
-import pl.chomik.app.DatabaseHandler;
+import pl.chomik.app.AppProperties;
 
 public class UrlGuiController {
     @FXML
@@ -42,25 +42,23 @@ public class UrlGuiController {
                 urlContent.setText(rs.getString("URL"));
             }
         }catch (SQLException e){
-            System.out.println("[ APP FAILED ] SQLException");
+            if(AppProperties.getDebugState()) System.out.println("[ APP FAILED ] SQLException");
         }
     }
 
     @FXML
     private void urlBrowse_onAction(ActionEvent e){
-        System.out.println("[ APP OK ] Otweranie adresu URL: '" + urlContent.getText() + "'");
+        if(AppProperties.getDebugState()) System.out.println("[ APP OK ] Otweranie adresu URL: '" + urlContent.getText() + "'");
 
         try{
             Desktop.getDesktop().browse(new URI(urlContent.getText()));
         }
         catch (URISyntaxException e1){
-            System.out.println("[ APP FAILED ] URISyntaxException");
+            if(AppProperties.getDebugState()) System.out.println("[ APP FAILED ] URISyntaxException");
         }
         catch (java.io.IOException e1){
-            System.out.println("[ APP FAILED ] IOException");
+            if(AppProperties.getDebugState()) System.out.println("[ APP FAILED ] IOException");
         }
-
-        System.out.println("testbrowse");
     }
 
     @FXML

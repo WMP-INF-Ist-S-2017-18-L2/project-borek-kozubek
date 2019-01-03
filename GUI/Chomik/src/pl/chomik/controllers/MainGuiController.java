@@ -14,10 +14,9 @@ import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import pl.chomik.app.AppProperties;
 import pl.chomik.app.DatabaseHandler;
 import pl.chomik.app.Home;
-
-import javax.xml.crypto.Data;
 import java.io.IOException;
 import java.sql.*;
 
@@ -30,6 +29,8 @@ public class MainGuiController {
         SQLCONNECT();
         INIT_TABLEDATA();
 
+        updateLastParse();
+
         panelCityValue.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
@@ -38,8 +39,10 @@ public class MainGuiController {
                     if(valid.length()>0) {
                         panelCityValue.setText(valid.substring(0, valid.length() - 1));
                     } else panelCityValue.setText("");
-                    System.out.println("[ APP FAILED ] POLE MOŻE PRZYJMOWAĆ TYLKO LITERY");
-                    mainAPPstatus.setText("[ APP FAILED ] Pole może przyjmować tylko litery");
+                    if(AppProperties.getDebugState()) {
+                        System.out.println("[ APP FAILED ] POLE MOŻE PRZYJMOWAĆ TYLKO LITERY");
+                        mainAPPstatus.setText("[ APP FAILED ] Pole może przyjmować tylko litery");
+                    } else mainAPPstatus.setText("Pole może przyjmować tylko litery");
                 }
             }
         });
@@ -52,8 +55,10 @@ public class MainGuiController {
                     if(valid.length()>0) {
                         panelValueMinValue.setText(valid.substring(0, valid.length() - 1));
                     } else panelValueMinValue.setText("");
-                    System.out.println("[ APP FAILED ] POLE MOŻE PRZYJMOWAĆ TYLKO WARTOŚCI NUMERYCZNE");
-                    mainAPPstatus.setText("[ APP FAILED ] Pole może przyjmować tylko wartości numeryczne");
+                    if(AppProperties.getDebugState()){
+                        System.out.println("[ APP FAILED ] POLE MOŻE PRZYJMOWAĆ TYLKO WARTOŚCI NUMERYCZNE");
+                        mainAPPstatus.setText("[ APP FAILED ] Pole może przyjmować tylko wartości numeryczne");
+                    }else mainAPPstatus.setText("Pole może przyjmować tylko wartości numeryczne");
                 }
             }
         });
@@ -66,8 +71,10 @@ public class MainGuiController {
                     if(valid.length()>0) {
                         panelValueMaxValue.setText(valid.substring(0, valid.length() - 1));
                     } else panelValueMaxValue.setText("");
-                    System.out.println("[ APP FAILED ] POLE MOŻE PRZYJMOWAĆ TYLKO WARTOŚCI NUMERYCZNE");
-                    mainAPPstatus.setText("[ APP FAILED ] Pole może przyjmować tylko wartości numeryczne");
+                    if(AppProperties.getDebugState()){
+                        System.out.println("[ APP FAILED ] POLE MOŻE PRZYJMOWAĆ TYLKO WARTOŚCI NUMERYCZNE");
+                        mainAPPstatus.setText("[ APP FAILED ] Pole może przyjmować tylko wartości numeryczne");
+                    }else mainAPPstatus.setText("Pole może przyjmować tylko wartości numeryczne");
                 }
             }
         });
@@ -80,8 +87,10 @@ public class MainGuiController {
                     if(valid.length()>0) {
                         panelFieldMinValue.setText(valid.substring(0, valid.length() - 1));
                     } else panelFieldMinValue.setText("");
-                    System.out.println("[ APP FAILED ] POLE MOŻE PRZYJMOWAĆ TYLKO WARTOŚCI NUMERYCZNE");
-                    mainAPPstatus.setText("[ APP FAILED ] Pole może przyjmować tylko wartości numeryczne");
+                    if(AppProperties.getDebugState()){
+                        System.out.println("[ APP FAILED ] POLE MOŻE PRZYJMOWAĆ TYLKO WARTOŚCI NUMERYCZNE");
+                        mainAPPstatus.setText("[ APP FAILED ] Pole może przyjmować tylko wartości numeryczne");
+                    }else mainAPPstatus.setText("Pole może przyjmować tylko wartości numeryczne");
                 }
             }
         });
@@ -94,8 +103,10 @@ public class MainGuiController {
                     if(valid.length()>0) {
                         panelFieldMaxValue.setText(valid.substring(0, valid.length() - 1));
                     } else panelFieldMaxValue.setText("");
-                    System.out.println("[ APP FAILED ] POLE MOŻE PRZYJMOWAĆ TYLKO WARTOŚCI NUMERYCZNE");
-                    mainAPPstatus.setText("[ APP FAILED ] Pole może przyjmować tylko wartości numeryczne");
+                    if(AppProperties.getDebugState()){
+                        System.out.println("[ APP FAILED ] POLE MOŻE PRZYJMOWAĆ TYLKO WARTOŚCI NUMERYCZNE");
+                        mainAPPstatus.setText("[ APP FAILED ] Pole może przyjmować tylko wartości numeryczne");
+                    }else mainAPPstatus.setText("Pole może przyjmować tylko wartości numeryczne");
                 }
             }
         });
@@ -108,8 +119,10 @@ public class MainGuiController {
                     if(valid.length()>0) {
                         panelRoomsValue.setText(valid.substring(0, valid.length() - 1));
                     } else panelRoomsValue.setText("");
-                    System.out.println("[ APP FAILED ] POLE MOŻE PRZYJMOWAĆ TYLKO WARTOŚCI NUMERYCZNE");
-                    mainAPPstatus.setText("[ APP FAILED ] Pole może przyjmować tylko wartości numeryczne");
+                    if(AppProperties.getDebugState()){
+                        System.out.println("[ APP FAILED ] POLE MOŻE PRZYJMOWAĆ TYLKO WARTOŚCI NUMERYCZNE");
+                        mainAPPstatus.setText("[ APP FAILED ] Pole może przyjmować tylko wartości numeryczne");
+                    }else mainAPPstatus.setText("Pole może przyjmować tylko wartości numeryczne");
                 }
             }
         });
@@ -137,13 +150,22 @@ public class MainGuiController {
 
         connect = DatabaseHandler.Connector();
         if(connect!=null){
-            setAppStatusText("[ DBH OK ] Połączono z bazą danych.");
-            setDbStatusText("[connect:" + connect + "]");
+            if(AppProperties.getDebugState()) {
+                setAppStatusText("[ DBH OK ] Połączono z bazą danych.");
+            }else setAppStatusText("Połączono z bazą danych.");
+            if(AppProperties.getDebugState()) setDbStatusText("[connect:" + connect + "]");
+            else setDbStatusText("");
             homeTableView.getItems().removeAll();
         }
         else{
-            setAppStatusText("[ DBH FAILED ] Nieudana próba połączenia z bazą danych.");
-            setDbStatusText("---");
+            if(AppProperties.getDebugState()){
+                setAppStatusText("[ DBH FAILED ] Nieudana próba połączenia z bazą danych.");
+                setDbStatusText("---");
+            }
+            else{
+                setAppStatusText("Nieudana próba połączenia z bazą danych.");
+                setDbStatusText("");
+            }
         }
 
         appProgressIndicator.setVisible(false);
@@ -154,8 +176,15 @@ public class MainGuiController {
 
         boolean isConnectClosed = DatabaseHandler.CloseConnection();
         if(isConnectClosed){
-            setAppStatusText("[ DBH Rozłączono z bazą danych.");
-            setDbStatusText("---");
+
+            if(AppProperties.getDebugState()){
+                setAppStatusText("[ DBH OK ] Rozłączono z bazą danych.");
+                setDbStatusText("---");
+            }
+            else{
+                setAppStatusText("Rozłączono z bazą danych.");
+                setDbStatusText("");
+            }
         }
 
         appProgressIndicator.setVisible(false);
@@ -163,6 +192,7 @@ public class MainGuiController {
 
     private boolean SQLQUERY(){
         appProgressIndicator.setVisible(true);
+        updateLastParse();
 
         boolean isfilledCity;
         boolean isfilledValueMin;
@@ -249,25 +279,25 @@ public class MainGuiController {
         }
 
         try{
-            System.out.println("[ DEBUG ] SQLEXECUTE '" + executesql + "'");
+            if(AppProperties.getDebugState()) System.out.println("[ DEBUG ] SQLEXECUTE '" + executesql + "'");
             ResultSet rs = DatabaseHandler.Query(executesql);
 
             homeTableView.getItems().clear();
 
             while(rs.next()){
-                System.out.println("[ APP PARSE ] GETITEM -> "  + " " + rs.getString("ITEMID") + " " + rs.getString("CITY") + " " + rs.getInt("VALUE") + " " + rs.getDouble("FIELD") + " " + rs.getString("ROOMS") + " " + rs.getString("URL"));
+                if(AppProperties.getDebugState()) System.out.println("[ APP PARSE ] GETITEM -> "  + " " + rs.getString("ITEMID") + " " + rs.getString("CITY") + " " + rs.getInt("VALUE") + " " + rs.getDouble("FIELD") + " " + rs.getString("ROOMS") + " " + rs.getString("URL"));
                 homeTableView.getItems().add(new Home(rs.getLong("ADVID"),rs.getString("ITEMID"),rs.getString("CITY"),rs.getInt("VALUE"),rs.getDouble("FIELD"),rs.getString("ROOMS"),rs.getString("URL")));
             }
             appProgressIndicator.setVisible(false);
             return true;
         }
         catch (SQLException e){
-            System.out.println("[ DBH FAILED ] SQLException. NIE MOŻNA ZAKTUALIZOWAĆ DANYCH TABELI");
+            if(AppProperties.getDebugState()) System.out.println("[ DBH FAILED ] SQLException. NIE MOŻNA ZAKTUALIZOWAĆ DANYCH TABELI");
             appProgressIndicator.setVisible(false);
             return false;
         }
         catch (NullPointerException e){
-            System.out.println("[ DBH FAILED ] BRAK DANYCH DO PRZETWORZENIA");
+            if(AppProperties.getDebugState()) System.out.println("[ DBH FAILED ] BRAK DANYCH DO PRZETWORZENIA");
             appProgressIndicator.setVisible(false);
             return false;
         }
@@ -324,6 +354,8 @@ public class MainGuiController {
     @FXML
     private Label mainDBstatus = new Label();
     @FXML
+    private Label mainLastUpdate = new Label();
+    @FXML
     private ProgressIndicator appProgressIndicator = new ProgressIndicator(); // POLE TEKSTOWE DLA WARTOŚCI ->
 
 
@@ -332,9 +364,9 @@ public class MainGuiController {
     /////  METODY KONTROLEK
     @FXML
     private void menuFileExit_onAction(){
-        System.out.println("[ DB OK ] ZAMYKANIE POŁĄCZENIA Z BAZĄ DANYCH");
+        if(AppProperties.getDebugState()) System.out.println("[ DB OK ] ZAMYKANIE POŁĄCZENIA Z BAZĄ DANYCH");
         SQLCLOSE();
-        System.out.println("[ APP OK ] ZAMYKANIE APLIKACJI");
+        if(AppProperties.getDebugState()) System.out.println("[ APP OK ] ZAMYKANIE APLIKACJI");
         Platform.exit();
     }
 
@@ -368,8 +400,11 @@ public class MainGuiController {
         homeTableView.getItems().clear();
         SQLCLOSE();
         SQLCONNECT();
-        setAppStatusText("[ APP OK ] Rozpoczęto nową sesję.");
-        System.out.println("[ APP OK ] ROZPOCZĘTO NOWĄ SESJĘ");
+
+        if(AppProperties.getDebugState()){
+            setAppStatusText("[ APP OK ] Rozpoczęto nową sesję.");
+            System.out.println("[ APP OK ] ROZPOCZĘTO NOWĄ SESJĘ");
+        }else setAppStatusText("Rozpoczęto nową sesję.");
     }
 
     @FXML
@@ -380,9 +415,14 @@ public class MainGuiController {
         panelFieldMinValue.setText("");
         panelFieldMaxValue.setText("");
         panelRoomsValue.setText("");
-        setAppStatusText("[ APP OK ] Wyczyszczono kryteria.");
-        System.out.println("[ APP OK ] WYCZYSZCZONO KRYTERIA");
+
+        if(AppProperties.getDebugState()){
+            setAppStatusText("[ APP OK ] Wyczyszczono kryteria.");
+            System.out.println("[ APP OK ] WYCZYSZCZONO KRYTERIA");
+        }else setAppStatusText("Wyczyszczono kryteria.");
     }
+
+
 
     @FXML
     private void panelOpenlink_onAction(ActionEvent e){
@@ -409,22 +449,25 @@ public class MainGuiController {
 
                 Home home = (Home)homeTableView.getSelectionModel().getSelectedItem();
                 String itemid = home.getITEMID();
-                System.out.println(itemid);
                 ResultSet rs = DatabaseHandler.Query("SELECT * FROM \"HOMES\" WHERE ITEMID='" + itemid + "';");
                 urlController.getData(rs);
 
                 urlStage.show();
 
-                mainAPPstatus.setText("[ APP OK ] Otwieranie ogłoszenia");
-                System.out.println("[ APP OK ] OTWIERANIE OGŁOSZENIA");
+                if(AppProperties.getDebugState()){
+                    mainAPPstatus.setText("[ APP OK ] Otwieranie ogłoszenia");
+                    System.out.println("[ APP OK ] OTWIERANIE OGŁOSZENIA o ID: " + itemid);
+                }else mainAPPstatus.setText("Otwieranie ogłoszenia");
             }
             else{
-                mainAPPstatus.setText("[ APP FAILED ] Musisz zaznaczyć ogłoszenie, aby je otworzyć");
-                System.out.println("[ APP FAILED ] MUSISZ ZAZNACZYĆ OGŁOSZENIE, ABY JE OTWORZYĆ");
+                if(AppProperties.getDebugState()){
+                    mainAPPstatus.setText("[ APP FAILED ] Musisz zaznaczyć ogłoszenie, aby je otworzyć");
+                    System.out.println("[ APP FAILED ] MUSISZ ZAZNACZYĆ OGŁOSZENIE, ABY JE OTWORZYĆ");
+                }else mainAPPstatus.setText("Musisz zaznaczyć ogłoszenie, aby je otworzyć");
             }
         }
         catch (IOException e1){
-            System.out.println("[ APP FAILED ] IOException");
+            if(AppProperties.getDebugState()) System.out.println("[ APP FAILED ] IOException");
         }
 
 
@@ -436,15 +479,24 @@ public class MainGuiController {
         appProgressIndicator.setVisible(true);
 
 
-        System.out.println("[ DBH REQUEST ] PRZETWARZANIE ZAPYTANIA . . .");
-        mainAPPstatus.setText("[ DBH REQUEST ] Przetwarzanie zapytania . . .");
+        if(AppProperties.getDebugState()){
+            mainAPPstatus.setText("[ DBH REQUEST ] Przetwarzanie zapytania . . .");
+            System.out.println("[ DBH REQUEST ] PRZETWARZANIE ZAPYTANIA . . .");
+        }else mainAPPstatus.setText("Przetwarzanie zapytania . . .");
+
 
         if(SQLQUERY()){
-            System.out.println("[ DBH OK ] WYKONANO");
-            mainAPPstatus.setText("[ DBH OK ] Wykonano");
+            if(AppProperties.getDebugState()){
+                mainAPPstatus.setText("[ DBH OK ] Wykonano");
+                System.out.println("[ DBH OK ] WYKONANO");
+            }else mainAPPstatus.setText("Wykonano");
+
         }
         else{
-            mainAPPstatus.setText("[ APP FAILED ] Błąd podczas zbierania danych");
+            if(AppProperties.getDebugState()) {
+                mainAPPstatus.setText("[ APP FAILED ] Błąd podczas zbierania danych");
+                System.out.println("[ APP FAILED ] Błąd podczas zbierania danych");
+            }else mainAPPstatus.setText("Błąd podczas zbierania danych");
         }
 
 
@@ -453,4 +505,27 @@ public class MainGuiController {
 
     private void setAppStatusText(String text) {mainAPPstatus.setText(text);}
     private void setDbStatusText(String text) {mainDBstatus.setText(text);}
+    private void updateLastParse(){
+        if (connect != null){
+            try {
+                ResultSet rs = DatabaseHandler.Query("SELECT \"DATE\" FROM \"LASTUPDATE\" WHERE \"VENDOR\"='OTODOM';");
+                while (rs.next()){
+                    mainLastUpdate.setText("Ostatnia aktualizacja: " + rs.getString("DATE"));
+                    if(AppProperties.getDebugState()) System.out.println("[ DBH OK ] Ostatnia aktualizacja bazy: " + rs.getString("DATE"));
+                }
+            }
+            catch (SQLException e){
+                mainLastUpdate.setText("Ostatnia aktualizacja: < Błąd >");
+                if(AppProperties.getDebugState()) System.out.println("[ DBH FAILED ] SQLException");
+            }
+        }
+        else {
+            if (AppProperties.getDebugState()){
+
+                System.out.println("[ APP FAILED ] Nie można sprawdzić daty ostatniej aktualizacji. Brak połączenia z bazą.");
+                mainAPPstatus.setText("[ APP FAILED ] Nie można zaktualizować daty. Brak połączenia z bazą");
+            }
+            else mainAPPstatus.setText("Nie można sprawdzić daty ostatniej aktualizacji");
+        }
+    }
 }
