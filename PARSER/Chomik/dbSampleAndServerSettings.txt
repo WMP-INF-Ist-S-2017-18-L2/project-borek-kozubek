@@ -1,12 +1,13 @@
 CREATE TABLE homess (
   advid BIGSERIAL NOT NULL PRIMARY KEY,
   itemid VARCHAR(5) NOT NULL UNIQUE,
-  datatrackid INTEGER NOT NULL UNIQUE,
+  datatrackid BIGINT NOT NULL UNIQUE,
   city VARCHAR(99) NOT NULL,
   value INTEGER NOT NULL,
   field REAL NOT NULL,
   rooms VARCHAR(3) NOT NULL,
-  url VARCHAR(255) NOT NULL
+  url VARCHAR(255) NOT NULL,
+  date timestamptz
   );
 
 INSERT INTO homes (itemid,datatrackid,city,value,field,rooms,url)VALUES('9fE5s',00000001,'Kraków',1600,25,1,'127.0.0.1/info.php');

@@ -2,7 +2,21 @@
 $pgsqldbconfig = require_once 'pgsqldbconfig.php';
 $table=$pgsqldbconfig['table'];
 $datatable=$pgsqldbconfig['datatable'];
+//----------------------------------------
+$col1 = $pgsqldbconfig['tab1col1'];
+$col2 = $pgsqldbconfig['tab1col2'];
+$col3 = $pgsqldbconfig['tab1col3'];
+$col4 = $pgsqldbconfig['tab1col4'];
+$col5 = $pgsqldbconfig['tab1col5'];
+$col6 = $pgsqldbconfig['tab1col6'];
+$col7 = $pgsqldbconfig['tab1col7'];
+$col8 = $pgsqldbconfig['tab1col8'];
+$col9 = $pgsqldbconfig['tab1col9'];
 
+$datcol1 = $pgsqldbconfig['datatabcol1'];
+$datcol2 = $pgsqldbconfig['datatabcol2'];
+$datcol3 = $pgsqldbconfig['datatabcol3'];
+//----------------------------------------
 $dsn = "pgsql:host={$pgsqldbconfig['host']}; port={$pgsqldbconfig['port']}; dbname={$pgsqldbconfig['dbname']}";
 $attributes = [
 	PDO::ATTR_EMULATE_PREPARES   => false, // turn off emulation mode for "real" prepared statements
