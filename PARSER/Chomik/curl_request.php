@@ -1,11 +1,12 @@
 <?php
 set_time_limit(600);
 $connectsql = require_once 'connectsql.php';
-$query="INSERT INTO $table (itemid, datatrackid, city, value, field, rooms, url)VALUES(:itemid,:datatrackid,:city,:cena,:powierzchnia,:rooms,:url)";
-$queryu="UPDATE $table SET city = :city, value = :cena, field = :powierzchnia, rooms = :rooms, url = :url WHERE itemid = :itemid AND datatrackid = :datatrackid";
-$stmt = $pdo->prepare($query);
-$stmtu = $pdo->prepare($queryu);
-$fp = fopen("dane.txt","w");
+$stmt = $pdo->prepare("INSERT INTO $table ($col1, $col2, $col3, $col4, $col5, $col6, $col7, $col8)VALUES(:itemid,:datatrackid,:city,:cena,:powierzchnia,:rooms,:url,now())");
+$stmtu = $pdo->prepare("UPDATE $table SET $col3 = :city, $col4 = :cena, $col5 = :powierzchnia, $col6 = :rooms, $col7 = :url WHERE $col1 = :itemid AND $col2 = :datatrackid");
+$data = $pdo->prepare("INSERT INTO $datatable ($datcol1, $datcol2, $datcol3)VALUES(:id, :vendor,:date)");
+$datau = $pdo->prepare("UPDATE $datatable SET $datcol2 = :vendor, $datcol3 = :date WHERE $datcol1 = :id");
+$deldat = $pdo->prepare("DELETE FROM $table WHERE $col8 <=  NOW() - INTERVAL 1 MONTH");
+$fp = fopen("daneoto.txt","w");
 
 $data_item_id='article class=\"offer-item ad_id(.*?)\s*\"';
 $data_trackin_id='data-tracking-id=\"[^\s]*?\"';
@@ -127,14 +128,35 @@ function pars($wynik){
     }
 }
 
-echo 'done';
+$datas = [
+    ':id' => '1',
+    ':vendor' => 'otodom',
+    ':date' => date('d-m-Y H:i:s'),
+];
+
+try{
+    $data->execute($datas);
+}catch (PDOException $e){
+    $datau->execute($datas);
+}catch (Exception $err){
+    echo '<br />Data Insertion PROBLEM: '.$e->getMessage().'or Update PROBLEM: '.$err->getMessage();
+    error_log('<br />Data Insertion PROBLEM: '.$e->getMessage().'or Update PROBLEM: '.$err->getMessage());
+}
+
+$deldat->execute();
+
+echo 'done in '.date('d-m-Y H:i:s');
 
 fclose($fp);
 curl_close($ch);
 $stmt->closeCursor();
 $stmtu->closeCursor();
+$data->closeCursor();
+$datau->closeCursor();
 $stmt = null;
 $stmtu = null;
+$data = null;
+$datau = null;
 $pdo->query('SELECT pg_terminate_backend(pg_backend_pid());');
 $pdo = null;
 ?>
