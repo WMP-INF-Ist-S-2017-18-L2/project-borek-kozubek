@@ -245,38 +245,40 @@ public class MainGuiController {
         if (isfilledCity){
             if (!firstNoAnd) firstNoAnd = true;
             else executesql = SQLQUERYaddAND(executesql);
-            executesql = executesql + " CITY='" + panelCityValue.getText() + "' ";
+            executesql = executesql + " \"CITY\"='" + panelCityValue.getText() + "' ";
         }
 
         if (isfilledValueMin){
             if (!firstNoAnd) firstNoAnd = true;
             else executesql = SQLQUERYaddAND(executesql);
-            executesql = executesql + " VALUE>=" + panelValueMinValue.getText() + " ";
+            executesql = executesql + " \"VALUE\">=" + panelValueMinValue.getText() + " ";
         }
 
         if (isfilledValueMax){
             if (!firstNoAnd) firstNoAnd = true;
             else executesql = SQLQUERYaddAND(executesql);
-            executesql = executesql + " VALUE<=" + panelValueMaxValue.getText() + " ";
+            executesql = executesql + " \"VALUE\"<=" + panelValueMaxValue.getText() + " ";
         }
 
         if (isfilledFieldMin){
             if (!firstNoAnd) firstNoAnd = true;
             else executesql = SQLQUERYaddAND(executesql);
-            executesql = executesql + " FIELD>=" + panelFieldMinValue.getText() + " ";
+            executesql = executesql + " \"FIELD\">=" + panelFieldMinValue.getText() + " ";
         }
 
         if (isfilledFieldMax){
             if (!firstNoAnd) firstNoAnd = true;
             else executesql = SQLQUERYaddAND(executesql);
-            executesql = executesql + " FIELD<=" + panelFieldMaxValue.getText() + " ";
+            executesql = executesql + " \"FIELD\"<=" + panelFieldMaxValue.getText() + " ";
         }
 
         if (isfilledRooms){
             if (!firstNoAnd) firstNoAnd = true;
             else executesql = SQLQUERYaddAND(executesql);
-            executesql = executesql + " ROOMS='" + panelRoomsValue.getText() + "' ";
+            executesql = executesql + " \"ROOMS\"='" + panelRoomsValue.getText() + "' ";
         }
+
+        executesql = executesql + " ;";
 
         try{
             if(AppProperties.getDebugState()) System.out.println("[ DEBUG ] SQLEXECUTE '" + executesql + "'");
@@ -449,7 +451,7 @@ public class MainGuiController {
 
                 Home home = (Home)homeTableView.getSelectionModel().getSelectedItem();
                 String itemid = home.getITEMID();
-                ResultSet rs = DatabaseHandler.Query("SELECT * FROM \"HOMES\" WHERE ITEMID='" + itemid + "';");
+                ResultSet rs = DatabaseHandler.Query("SELECT * FROM \"HOMES\" WHERE \"ITEMID\"='" + itemid + "';");
                 urlController.getData(rs);
 
                 urlStage.show();
@@ -505,13 +507,16 @@ public class MainGuiController {
 
     private void setAppStatusText(String text) {mainAPPstatus.setText(text);}
     private void setDbStatusText(String text) {mainDBstatus.setText(text);}
+
     private void updateLastParse(){
         if (connect != null){
             try {
                 ResultSet rs = DatabaseHandler.Query("SELECT \"DATE\" FROM \"LASTUPDATE\" WHERE \"VENDOR\"='OTODOM';");
                 while (rs.next()){
-                    mainLastUpdate.setText("Ostatnia aktualizacja: " + rs.getString("DATE"));
-                    if(AppProperties.getDebugState()) System.out.println("[ DBH OK ] Ostatnia aktualizacja bazy: " + rs.getString("DATE"));
+                    //java.sql.Date rsDate = rs.getDate("DATE");
+                    //System.out.println("update " + rsDate);
+                    mainLastUpdate.setText("Ostatnia aktualizacja: " + rs.getDate("DATE"));
+                    if(AppProperties.getDebugState()) System.out.println("[ DBH OK ] Ostatnia aktualizacja bazy: " + rs.getDate("DATE"));
                 }
             }
             catch (SQLException e){
