@@ -122,8 +122,31 @@
     sprawdź konfigurację</li>
   </ul>
   
-  8. Parser
-  Obecna wersja parsera obsługuje jedynie serwis otodom, jednak jest on przygotowany do rozbudowy o obsługę innych serwisów.
-  Konfiguracja parsera.
-
+  8. Parser<br>
+  Obecna wersja parsera obsługuje jedynie bazy danych serwera PostgreSQL oraz serwis otodom, jednak jest on przygotowany do rozbudowy o obsługę innych serwisów.<br>
+  Konfiguracja parsera.<br>
+  <ul>
+  <li>Konfiguracja parsera polega na edycji pliku "pgsqlbdconfig.php" gdzie w odpowiednich polach podajemy dane potrzebne do połączenia z serwerem sql i tabel oraz odpowiednie nazwy kolumn.</li>
+  Tabela główna posiada kolumny które przechowują dane: 
+  <ul>
+    <li>#kolumna nie jest używana w konfiguracji#\t-\tid ogłoszenia w naszej bazie, jest to Primary_key, auto_increment</li>
+    <li>tab1col1\t-\tznakowe id ogłoszenia w serwisie</li>
+    <li>tab1col2\t-\tliczbowe id ogłoszenia w serwisie</li>
+    <li>tab1col3\t-\tnazwa miasta</li>
+    <li>tab1col4\t-\tcena dla danego ogłoszenia</li>
+    <li>tab1col5\t-\twielkość oferowanej nieruchomości</li>
+    <li>tab1col6\t-\tliczba pokoi</li>
+    <li>tab1col7\t-\tadres ogłoszenia</li>
+    <li>tab1col8\t-\twstawiana jest zawsze aktualna data i czas dodania ogłoszenia do naszej bazy</li>
+  </ul>
+  Tabela dla przechowywania daty ostatniej aktualizacji tabeli głównej
+  <ul>
+    <li>datatabcol1\t-\tid dla danego serwisu</li>
+    <li>datatabcol2\t-\tnazwa serwisu aktualizowanego</li>
+    <li>datatabcol3\t-\tczas ostatniej aktualizacji</li>
+  </ul>
+  </ul>
+  Opis działania<br>
+  Skrypt obsługujący serwis otodom pobiera dane takie m.in. id_ogłoszenia, miasto, cenę, ilość pokoi, a następnie zapisuje je do odpowiednich kolumn danej tabeli w naszej bazie.<br>
+  
 project-borek-kozubek created by GitHub Classroom
