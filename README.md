@@ -1,5 +1,15 @@
 # Chomik - wyszukiwarka mieszkań
 
+<strong><li><ol>Informacje o autorach</ol>
+<ol>Opis działania</ol>
+  <ol>Wymagania dla aplikacji Chomik</ol>
+    <ol>Uruchamianie aplikacji</ol>
+  <ol>Konfiguracja</ol>
+  <ol>Sposób użytkowania aplikacji klienckiej Chomik</ol>
+  <ol>Podstawowe błędy mogące wystąpić podczas działąnia aplikacji klienckiej Chomik</ol>
+  <ol>Parser</ol></li></strong>
+
+
 1. Informacje o autorach<br>
   Nad projektem pracują: Borek Kamil i Kozubek Dariusz.
   
