@@ -5,7 +5,7 @@
   <li>Opis działania</li>
   <li>Wymagania dla aplikacji Chomik</li>
   <li>Uruchamianie aplikacji</li>
-  <li>Konfiguracja</ol>
+  <li>Konfiguracja</li>
   <li>Sposób użytkowania aplikacji klienckiej Chomik</li>
   <li>Podstawowe błędy mogące wystąpić podczas działąnia aplikacji klienckiej Chomik</li>
   <li>Parser</li>
@@ -121,5 +121,9 @@
     <li><i>'Nie można sprawdzić daty ostatniej aktualizacji'</i> - nie można połączyć z bazą danych,
     sprawdź konfigurację</li>
   </ul>
+  
+  8. Parser
+  Obecna wersja parsera obsługuje jedynie serwis otodom, jednak jest on przygotowany do rozbudowy o obsługę innych serwisów.
+  Konfiguracja parsera.
 
 project-borek-kozubek created by GitHub Classroom
