@@ -1,13 +1,15 @@
 # Chomik - wyszukiwarka mieszkań
 
-<strong><ol><li>Informacje o autorach</li>
-<li>Opis działania</li>
+<strong><ol>
+  <li>Informacje o autorach</li>
+  <li>Opis działania</li>
   <li>Wymagania dla aplikacji Chomik</li>
-    <li>Uruchamianie aplikacji</li>
+  <li>Uruchamianie aplikacji</li>
   <li>Konfiguracja</ol>
   <li>Sposób użytkowania aplikacji klienckiej Chomik</li>
   <li>Podstawowe błędy mogące wystąpić podczas działąnia aplikacji klienckiej Chomik</li>
-  <li>Parser</li></ol></strong>
+  <li>Parser</li>
+  </ol></strong>
 
 
 1. Informacje o autorach<br>
