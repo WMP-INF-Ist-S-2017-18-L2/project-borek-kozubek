@@ -130,7 +130,7 @@
   Tabela główna posiada kolumny które przechowują dane: 
   <ul>
     <li>#kolumna nie jest używana w konfiguracji#\t-\tid ogłoszenia w naszej bazie, jest to Primary_key, auto_increment</li>
-    <li>tab1col1\t-\tznakowe id ogłoszenia w serwisie</li>
+    <li>tab1col1&#09-&#09znakowe id ogłoszenia w serwisie</li>
     <li>tab1col2\t-\tliczbowe id ogłoszenia w serwisie</li>
     <li>tab1col3\t-\tnazwa miasta</li>
     <li>tab1col4\t-\tcena dla danego ogłoszenia</li>
