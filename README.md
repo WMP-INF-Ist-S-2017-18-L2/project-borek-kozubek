@@ -123,7 +123,7 @@
   </ul>
   
   8. Parser<br>
-  Obecna wersja parsera obsługuje jedynie bazy danych serwera PostgreSQL oraz serwis otodom, jednak jest on przygotowany do rozbudowy o obsługę innych serwisów.<br>
+  Obecna wersja parsera obsługuje jedynie bazy danych serwera PostgreSQL. Obsługa serwisów ogłoszeniowych została rozdzielona do osobnych plików.<br>
   Konfiguracja parsera.<br>
   <ul>
   <li>Konfiguracja parsera polega na edycji pliku "pgsqlbdconfig.php" gdzie w odpowiednich polach podajemy dane potrzebne do połączenia z serwerem sql i tabel oraz odpowiednie nazwy kolumn.</li>
