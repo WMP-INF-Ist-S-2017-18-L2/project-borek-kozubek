@@ -11,7 +11,7 @@ $deldat = $pdo->prepare("DELETE FROM $table WHERE $col8 <=  NOW() - INTERVAL '1 
 #-------------------------#
 
 #----- open File for save -----#
-$fp = fopen("daneoto.txt","w");
+$fp = fopen("daneolx.txt","w");
 
 #----- Deleting old records -----#
 try {
@@ -22,14 +22,14 @@ try {
 }
 
 #----- Strings for matching data from page -----#
-$data_item_id='article class=\"offer-item ad_id(.*?)\s*\"';
-$data_trackin_id='data-tracking-id=\"[^\s]*?\"';
-$web_link='data-url=\"https://www.otodom.pl/oferta/[^\s]*?html';
-$web_cena='li class=\"offer-item-price\">\s*(.*?)\s*zł';
-$web_field='strong class=\"visible-xs-block\">(.*?) m';
-$web_rooms='li class="offer-item-rooms hidden-xs\">(.*?) pok';
-$web_pages='strong class=\"current\">(.*?)<';
-$web_city='p class=\"text-nowrap hidden-xs\">Mieszkanie na wynajem: (.*?),';
+$data_item_id='[\s]ad_id(.*?)"';
+$data_trackin_id='[\s]*data-id="(.*?)"';
+$web_link='a[\s]*href=\"https://www.(.*)?html';
+$web_cena='[\s]class="price">[\s]*<strong>(.*?)z';
+$web_field='';
+$web_rooms='';
+$web_pages="page-link-last\">[\s]*<span>(.*?)<";
+$web_city='location-filled(.*?)\"';
 #$web_district='';
 #$web_province='';
 
@@ -37,7 +37,7 @@ $web_city='p class=\"text-nowrap hidden-xs\">Mieszkanie na wynajem: (.*?),';
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_URL, "https://www.otodom.pl/wynajem/mieszkanie/?nrAdsPerPage=999&search%5Border%5D=created_at_first%3Adesc");
+curl_setopt($ch, CURLOPT_URL, "https://www.olx.pl/nieruchomosci/mieszkania/wynajem/?search%5Border%5D=created_at%3Adesc");
 
 $result = curl_exec($ch);                                               //string of web page
 preg_match_all("!$web_pages!", $result, $match0);       //matching string for number of web pages
@@ -52,7 +52,7 @@ pars($result);
 for($pagenumber = 2; $pagenumber < $webpages[0]; $pagenumber++){
     #----- setting page & getting them -----#
     try {
-        curl_setopt($ch, CURLOPT_URL, "https://www.otodom.pl/wynajem/mieszkanie/?nrAdsPerPage=999&search%5Border%5D=created_at_first%3Adesc&page=$pagenumber");
+        curl_setopt($ch, CURLOPT_URL, "https://www.olx.pl/nieruchomosci/mieszkania/wynajem/?search%5Border%5D=created_at%3Adesc&page=$pagenumber");
         $result = curl_exec($ch);
     }catch(Exception $e){
         #echo '<br />Url PROBLEM: '.$e->getMessage();
@@ -95,71 +95,77 @@ function pars($wynik){
         error_log('<br />Matching PROBLEM: '.$e->getMessage());
     }
 
-    for ($i=0; $i < count ($linkeds); $i++){
-        #----- triming matches=> preparing for insertion to DB -----#
-        try {
-            $linkeds[$i] = substr($linkeds[$i], 10);
-            $datasids[$i] = substr($datasids[$i], 18, -1);
-            $dataids[$i] = substr($dataids[$i], 0, 5);
-            $cenowka[$i] = preg_replace('/[^0-9]/', '', $cenowka[$i]);
-            $fielded[$i] = preg_replace('/[,]/', ".", preg_replace('/[^0-9,]/', '', $fielded[$i]));
-            #$roomsed[$i] = preg_replace('/[^0-9]/', '', $roomsed[$i]);
-        }catch (Exception $e){
-            #echo '<br />Trim PROBLEM: '.$e->getMessage();
-            error_log('<br />Trim PROBLEM: '.$e->getMessage());
-        }
+    for ($i=0; $i < count ($datasids); $i++) {
+        #----- checking for adv freom this service -----#
+        if(substr($linkeds[$i], 20, 3) !== "olx" ){
+            #echo "to jest i: ".$i."<br />";
+        }else{
 
-        #----- binding -----#
-        try {
-            $datas = [
-                ':itemid' => $dataids[$i],
-                ':datatrackid' => $datasids[$i],
-                ':city' => $citisies[$i],
-                ':cena' => $cenowka[$i],
-                ':powierzchnia' => $fielded[$i],
-                ':rooms' => $roomsed[$i],
-                ':url' => $linkeds[$i],
-            ];
-        }catch (Exception $e){
-            #echo '<br />Data PROBLEM: '.$e->getMessage();
-            error_log('<br />Data PROBLEM: '.$e->getMessage());
-        }
-
-        #----- executing query with values, withdrawal of existing records -----#
-        $pdo->beginTransaction();
-        try{
-            $stmt->execute($datas);
-            $pdo->commit();
-        }catch(PDOException $err){
+            #----- triming matches=> preparing for insertion to DB -----#
             try {
-                $pdo->rollBack();
-                $stmtu->execute($datas);
-            }catch (Exception $error){
-                #echo '<br />Update record PROBLEM: '.$error->getMessage();
-                error_log('<br />Update record PROBLEM: '.$error->getMessage());
+                $linkeds[$i] = substr($linkeds[$i], 8);
+                $datasids[$i] = substr($datasids[$i], 10, -1);
+                #$dataids[$i] = substr($dataids[$i], 0, 0);
+                $cenowka[$i] = preg_replace('/[^0-9]/', '', $cenowka[$i]);
+                $fielded[$i] = preg_replace('/[,]/', ".", preg_replace('/[^0-9,]/', '', $fielded[$i]));
+                #$roomsed[$i] = preg_replace('/[^0-9]/', '', $roomsed[$i]);
+            } catch (Exception $e) {
+                #echo '<br />Trim PROBLEM: ' . $e->getMessage();
+                error_log('<br />Trim PROBLEM: ' . $e->getMessage());
             }
-            error_log('<br />PDO PROBLEM: '.$err->getMessage());
-        }catch (Exception $e) {
-            #echo '<br />Insert Into DB PROBLEM: '.$e->getMessage();
-            error_log('<br />Insert Into DB PROBLEM: '.$e->getMessage());
-        }
 
-        #----- save to file -----#
-        try{
-            #echo "<pre>$pagenumber &#09 $i &#09 $dataids[$i] &#09 $datasids[$i] &#09 $citisies[$i] &#09 $cenowka[$i] &#09 $fielded[$i] &#09 $roomsed[$i] &#09 $linkeds[$i]</pre>";
-            $dane_do_pliku = "$pagenumber \t $i \t $dataids[$i] \t $datasids[$i] \t $citisies[$i] \t $cenowka[$i] \t $fielded[$i] \t $roomsed[$i] \t $linkeds[$i]\n";
-            fputs($fp, $dane_do_pliku);
-        }catch(Exception $e){
-            #echo '<br />echo or sth PROBLEM: '.$e->getMessage();
-            error_log('<br />echo or sth PROBLEM: '.$e->getMessage());
+            #----- binding -----#
+            try {
+                $datas = [
+                    ':itemid' => $dataids[$i],
+                    ':datatrackid' => $datasids[$i],
+                    ':city' => $citisies[$i],
+                    ':cena' => $cenowka[$i],
+                    ':powierzchnia' => $fielded[$i],
+                    ':rooms' => $roomsed[$i],
+                    ':url' => $linkeds[$i],
+                ];
+            } catch (Exception $e) {
+                #echo '<br />Data PROBLEM: ' . $e->getMessage();
+                error_log('<br />Data PROBLEM: ' . $e->getMessage());
+            }
+
+            #----- executing query with values, withdrawal of existing records -----#
+            $pdo->beginTransaction();
+            try{
+                $stmt->execute($datas);
+                $pdo->commit();
+            }catch(PDOException $err){
+                try {
+                    $pdo->rollBack();
+                    $stmtu->execute($datas);
+                }catch (Exception $error){
+                    #echo '<br />Update record PROBLEM: '.$error->getMessage();
+                    error_log('<br />Update record PROBLEM: '.$error->getMessage());
+                }
+                error_log('<br />PDO PROBLEM: '.$err->getMessage());
+            }catch (Exception $e) {
+                #echo '<br />Insert Into DB PROBLEM: '.$e->getMessage();
+                error_log('<br />Insert Into DB PROBLEM: '.$e->getMessage());
+            }
+
+            #----- save to file -----#
+            try {
+                #echo "<pre>$pagenumber &#09 $i &#09 $dataids[$i] &#09 $datasids[$i] &#09 $citisies[$i] &#09 $cenowka[$i] &#09 $fielded[$i] &#09 $roomsed[$i] &#09 $linkeds[$i]</pre>";
+                $dane_do_pliku = "$pagenumber \t $i \t $dataids[$i] \t $datasids[$i] \t $citisies[$i] \t $cenowka[$i] \t $fielded[$i] \t $roomsed[$i] \t $linkeds[$i]\n";
+                fputs($fp, $dane_do_pliku);
+            } catch (Exception $e) {
+                #echo '<br />echo or sth PROBLEM: ' . $e->getMessage();
+                error_log('<br />echo or sth PROBLEM: ' . $e->getMessage());
+            }
         }
     }
 }
 
 #----- Binding and executing Query for data table in DB -----#
 $datas = [
-    ':id' => '1',
-    ':vendor' => 'otodom',
+    ':id' => '2',
+    ':vendor' => 'olx',
     ':date' => date('d-m-Y H:i:s'),
 ];
 try{

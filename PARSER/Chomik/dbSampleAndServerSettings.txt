@@ -1,15 +1,41 @@
+#--- Sample of tables in Database ---#
 CREATE TABLE homess (
   advid BIGSERIAL NOT NULL PRIMARY KEY,
   itemid VARCHAR(5) NOT NULL UNIQUE,
   datatrackid BIGINT NOT NULL UNIQUE,
   city VARCHAR(99) NOT NULL,
   value INTEGER NOT NULL,
-  field REAL NOT NULL,
-  rooms VARCHAR(3) NOT NULL,
+  field REAL,
+  rooms VARCHAR(3),
   url VARCHAR(255) NOT NULL,
   date timestamptz
   );
+  
+  CREATE TABLE lastupdate (
+  id smallint not null, 
+  vendor varchar(30),
+  date varchar(20)
+  );
 
+
+#----------recomended enabled options and extensions in file php.ini----------#
+# !!! checked by #//# are required !!! --- !!! marked by #//# are required !!! --- !!! checked by #//# are required !!!  ####
+extension=curl						#//#																					#
+extension=fileinfo																											#
+extension=gettext																											#
+extension=mbstring																											#
+extension=exif      ; Must be after mbstring as it depends on it															#
+;extension=oci8_12c  ; Use with Oracle Database 12c Instant Client															#
+extension=pdo_mysql																											#
+extension=pdo_pgsql					#//#																					#
+extension=pdo_sqlite																										#
+extension=pgsql																												#
+																															#
+display_errors=Off	// => Off																								#
+log_errors=On 		// => On		#//#																					#
+# !!! marked by #//# are required !!! --- !!! checked by #//# are required !!! --- !!! marked by #//# are required !!!   ####
+
+#--- sample of few records---#
 INSERT INTO homes (itemid,datatrackid,city,value,field,rooms,url)VALUES('9fE5s',00000001,'Kraków',1600,25,1,'127.0.0.1/info.php');
 INSERT INTO homes (itemid,datatrackid,city,value,field,rooms,url)VALUES('',00000002,'Rzeszów',1500,30,2,'127.0.0.1/info.php');
 INSERT INTO homes (itemid,datatrackid,city,value,field,rooms,url)VALUES('',00000003,'Krosno',1300,40,2,'127.0.0.1/info.php');
@@ -22,32 +48,3 @@ INSERT INTO homes (itemid,datatrackid,city,value,field,rooms,url)VALUES('',00000
 INSERT INTO homes (itemid,datatrackid,city,value,field,rooms,url)VALUES('',00000010,'Radom',1000,4,59,'127.0.0.1/info.php');
 INSERT INTO homes (itemid,datatrackid,city,value,field,rooms,url)VALUES('',00000011,'Rzeszów',1300,27,1,'127.0.0.1/info.php');
 INSERT INTO homes (itemid,datatrackid,city,value,field,rooms,url)VALUES('',00000012,'Rzeszów',800,21,1,'127.0.0.1/info.php');
-
-php.ini
-extension=bz2
-extension=curl
-extension=fileinfo
-extension=gd2
-extension=gettext
-;extension=gmp
-;extension=intl
-;extension=imap
-;extension=interbase
-;extension=ldap
-extension=mbstring
-extension=exif      ; Must be after mbstring as it depends on it
-extension=mysqli
-;extension=oci8_12c  ; Use with Oracle Database 12c Instant Client
-;extension=odbc
-;extension=openssl
-;extension=pdo_firebird
-extension=pdo_mysql
-;extension=pdo_oci
-;extension=pdo_odbc
-extension=pdo_pgsql
-extension=pdo_sqlite
-extension=pgsql
-;extension=shmop
-
-display_errors= // => Off
-log_errors= // => On
