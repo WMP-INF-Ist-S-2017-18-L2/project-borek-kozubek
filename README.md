@@ -123,30 +123,39 @@
   </ul>
   
   8. Parser<br>
-  Obecna wersja parsera obsługuje jedynie bazy danych serwera PostgreSQL. Obsługa serwisów ogłoszeniowych została rozdzielona do osobnych plików.<br>
-  Konfiguracja parsera.<br>
+  Obecna wersja parsera obsługuje bazy danych serwera PostgreSQL. Obsługa serwisów ogłoszeniowych została rozdzielona do osobnych plików by umożliwić wybór poszczególnych serwisów.<br>
+  Skrypt został wyposażony w:
   <ul>
-  <li>Konfiguracja parsera polega na edycji pliku "pgsqlbdconfig.php" gdzie w odpowiednich polach podajemy dane potrzebne do połączenia z serwerem sql i tabel oraz odpowiednie nazwy kolumn.</li>
+  <li>mechanizm cyklicznego usuwania rekordów starszych niż 1 miesiąc</li>
+  <li>zapis ostatnio pobranych danych do pliku</li>
+  <li>zapis błędów do pliku error_log</li>
+  </ul>
+  Uruchomienie parsera.<br />
+  By uruchomić parser należy posiadać dostęp do serwara umożliwiającego wykonywanie skryptów php oraz dostępu do serwera postgresql z odpowiednią strukturą bazodanową. Samo uruchomienie skryptu możliwe jest przez otworzeniu lokalnego adresu w przeglądarce lub wywołanie z konsoli poprzez "php -parametr nazwa_skryptu.php" (np: php -q curl-otodom.php). Zalecamy utworzenie automatycznego wywoływania skryptu, dla serwera z systemem linux z użyciem np. podstawowego narzędzia jakim jest cron. Dodając do harmonogramu cron'a wpis w postaci (0 */1 * * * php -q /usr/share/nginx/php/curl-otodom.php) ustalamy, iż skrypt będzie uruchamiany w 0-wej minucie każdej godziny czasu serwera.<br />
+  Konfiguracja parsera (oraz serwera).<br>
+  <ul>
+  <li>Wszelkie opcje serwera wymagane do poprawnego działania parsera zostały podane w pliku "dbSampleAndServerSettings.txt", jak również umieszczone zostały definicje wymaganych tabel bazy danych.
+  <li>Konfiguracja polega na edycji pliku "pgsqlbdconfig.php" gdzie w odpowiednich polach podajemy dane potrzebne do połączenia z serwerem sql oraz odpowiednie nazwy tabel i kolumn - wszelkie informacje zostały podane w plikach jako komentarze.</li>
   Tabela główna posiada kolumny które przechowują dane: 
   <ul>
-    <li>#kolumna nie jest używana w konfiguracji#\t-\tid ogłoszenia w naszej bazie, jest to Primary_key, auto_increment</li>
+    <li>#kolumna nie jest używana w konfiguracji# &#09-&#09id ogłoszenia w naszej bazie, jest to Primary_key, auto_increment</li>
     <li>tab1col1&#09-&#09znakowe id ogłoszenia w serwisie</li>
-    <li>tab1col2\t-\tliczbowe id ogłoszenia w serwisie</li>
-    <li>tab1col3\t-\tnazwa miasta</li>
-    <li>tab1col4\t-\tcena dla danego ogłoszenia</li>
-    <li>tab1col5\t-\twielkość oferowanej nieruchomości</li>
-    <li>tab1col6\t-\tliczba pokoi</li>
-    <li>tab1col7\t-\tadres ogłoszenia</li>
-    <li>tab1col8\t-\twstawiana jest zawsze aktualna data i czas dodania ogłoszenia do naszej bazy</li>
+    <li>tab1col2&#09-&#09liczbowe id ogłoszenia w serwisie</li>
+    <li>tab1col3&#09-&#09nazwa miasta</li>
+    <li>tab1col4&#09-&#09cena dla danego ogłoszenia</li>
+    <li>tab1col5&#09-&#09wielkość oferowanej nieruchomości</li>
+    <li>tab1col6&#09-&#09liczba pokoi</li>
+    <li>tab1col7&#09-&#09adres ogłoszenia</li>
+    <li>tab1col8&#09-&#09wstawiana jest zawsze aktualna data i czas dodania ogłoszenia do naszej bazy</li>
   </ul>
   Tabela dla przechowywania daty ostatniej aktualizacji tabeli głównej
   <ul>
-    <li>datatabcol1\t-\tid dla danego serwisu</li>
-    <li>datatabcol2\t-\tnazwa serwisu aktualizowanego</li>
-    <li>datatabcol3\t-\tczas ostatniej aktualizacji</li>
+    <li>datatabcol1&#09-&#09id dla danego serwisu</li>
+    <li>datatabcol2&#09-&#09nazwa serwisu aktualizowanego</li>
+    <li>datatabcol3&#09-&#09czas ostatniej aktualizacji</li>
   </ul>
   </ul>
   Opis działania<br>
-  Skrypt obsługujący serwis otodom pobiera dane takie m.in. id_ogłoszenia, miasto, cenę, ilość pokoi, a następnie zapisuje je do odpowiednich kolumn danej tabeli w naszej bazie.<br>
+  Skrypt obsługujący serwis otodom pobiera m.in. następujące dane: id_ogłoszenia, miasto, cenę, ilość pokoi; a następnie zapisuje je do odpowiednich kolumn danej tabeli w naszej bazie.<br>
   
 project-borek-kozubek created by GitHub Classroom
