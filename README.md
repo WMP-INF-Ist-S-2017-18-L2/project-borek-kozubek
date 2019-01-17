@@ -123,7 +123,7 @@
   </ul>
   
   8. Parser<br>
-  Obecna wersja parsera obsługuje bazy danych serwera PostgreSQL. Obsługa serwisów ogłoszeniowych została rozdzielona do osobnych plików by umożliwić wybór poszczególnych serwisów.<br>
+  Obecna wersja parsera obsługuje bazy danych serwera PostgreSQL. Obsługa serwisów ogłoszeniowych została rozdzielona do osobnych plików by umożliwić wybór poszczególnych serwisów co powoduje konieczność oddzielnego uruchamiania pojedynczych skryptów. Czas działania każdego ze skryptów został ustawiony na 12minut.<br>
   Skrypt został wyposażony w:
   <ul>
   <li>mechanizm cyklicznego usuwania rekordów starszych niż 1 miesiąc</li>
